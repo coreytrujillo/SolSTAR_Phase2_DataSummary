@@ -200,7 +200,41 @@ ig220720 = ['No']
 
 igstr = ig220517 + ig220602 + ig220604 + ig220608 + ig220610 + ig220611 + ig220613 + ig220617 + ig220623 + ig220628 + ig220708 + ig220712 + ig220717 + ig220719 + ig220720
 
+# Contamination concentrations [g/kg]
+conc220517 = [20]
+conc220602 = [200]
+conc220604 = [200]
+conc220608 = [200, 200]
+conc220610 = [200]
+conc220611 = [200]
+conc220613 = [200, 200]
+conc220617 = [27]
+conc220623 = [40]
+conc220628 = [63] 
+conc220708 = [50]
+conc220712 = [40]
+conc220717 = [40]
+conc220719 = [40]
+conc220720 = [40]
 
+conc = conc220517 + conc220602 + conc220604 + conc220608 + conc220610 + conc220611 + conc220613 + conc220617 + conc220623 + conc220628 + conc220708 + conc220712 + conc220717 + conc220719 + conc220720
 
+# GAC Bed Volume [mL]
+GACbed220517 = [0]
+GACbed220602 = [0]
+GACbed220604 = [0]
+GACbed220608 = [0, 0]
+GACbed220610 = [600]
+GACbed220611 = [600]
+GACbed220613 = [600, 600]
+GACbed220617 = [300]
+GACbed220623 = [300]
+GACbed220628 = [600] 
+GACbed220708 = [600]
+GACbed220712 = [600]
+GACbed220717 = [450]
+GACbed220719 = [450]
+GACbed220720 = [450]
 
+GACbed = GACbed220517 + GACbed220602 + GACbed220604 + GACbed220608 + GACbed220610 + GACbed220611 + GACbed220613 + GACbed220617 + GACbed220623 + GACbed220628 + GACbed220708 + GACbed220712 + GACbed220717 + GACbed220719 + GACbed220720
 

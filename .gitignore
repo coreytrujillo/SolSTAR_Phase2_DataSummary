@@ -3,5 +3,4 @@ Archive/
 __pycache__/
 *.csv
 test.py
-ExperimentMatrix.xlsx
 PowerBarChart.py

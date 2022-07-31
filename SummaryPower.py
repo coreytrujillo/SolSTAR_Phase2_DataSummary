@@ -1143,7 +1143,7 @@ print('***************************************\n')
 print(BMsmry)
 outfname = __file__ 
 outfname = outfname[:-3]
-outfname = outfname + '_Summary.csv'
+outfname = outfname + '_Benchmark.csv'
 BMsmry.to_csv(outfname)
 
 #######################################
@@ -1155,7 +1155,7 @@ print('***************************************\n')
 print(CFsmry)
 CFoutname = __file__
 CFoutname = CFoutname[:-3]
-CFoutname = CFoutname + 'CollectorFiber_Summary.csv'
+CFoutname = CFoutname + '_CollectorFiber.csv'
 CFsmry.to_csv(CFoutname)
 
 #######################################
@@ -1167,7 +1167,7 @@ print('***************************************\n')
 print(esmry)
 eofname = __file__
 eofname = eofname[:-3]
-eofname = eofname + '_Experiment_Summary.csv'
+eofname = eofname + '_Experiment.csv'
 esmry.to_csv(eofname)
 
 ##############################################################################
