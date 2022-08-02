@@ -15,7 +15,8 @@ from HeaderExperimentData import *
 # Global Variables
 #######################################
 TempProfiles = 0 # Plot temp profiles for each experiment in a new window
-THistAve = 1 # Plot histogram of average temps 
+AvePHTemp = 1 # Plot histogram of average temps 
+PreheatTime = 1
 
 #######################################
 # Create index for each file
@@ -25,7 +26,7 @@ for i in range(0, len(enames)):
 	for j in range(0, len(elblidx[i])):
 		efnum.append(i)
 
-Tnumf = len(elbl) # Number of filtered datasets 
+enumf = len(elbl) # Number of filtered datasets 
 
 #######################################
 # Set up plotting parameters
@@ -36,7 +37,7 @@ figrootname = './Figures/' # Root file name for saving figures
 
 
 # Get color options
-[clrs, CUclrs] = daf.defcolors(Tnumf)
+[clrs, CUclrs] = daf.defcolors(enumf)
 
 # Color and font settings for plots
 mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs) 
@@ -48,7 +49,7 @@ mpl.rcParams["figure.figsize"] = (12, 6.75)
 edtstr = []
 eleg = []
 
-for i in range(0, Tnumf):
+for i in range(0, enumf):
 	edtstr.append(edatestrs[efnum[i]])
 	eleg.append(edatestrs[efnum[i]] + ' ' + elbl[i])
 
@@ -75,7 +76,7 @@ PHT3stdv = []
 AvePHT = []
 AvePHTstd = []
 
-for i in range(0, Tnumf):
+for i in range(0, enumf):
 	# Read and format data
 	datai = daf.data_read_format(efpath + enames[efnum[i]], edatestrs[efnum[i]])
 	
@@ -92,6 +93,7 @@ for i in range(0, Tnumf):
 	# Filter data
 	dataif = daf.data_filter(datai, edatestrs[efnum[i]], Tempi[i], Tempf[i])
 
+	# If aeration was not initiated
 	if AirT[i] == 'X':
 		TimeB4Air.append(0)
 		AirTime.append(0)
@@ -134,7 +136,7 @@ Tsmry = Tsmry.assign(T_Max=Tmax) # Power Estimates based on Flat Efficiency Valu
 
 if TempProfiles == 1:
 	# Plot all temperatures for each experiment in a separate window
-	for i in range(0, Tnumf):
+	for i in range(0, enumf):
 		plt.figure()
 		figi += 1
 		for j in range(0, len(Tagstr[i])):
@@ -148,20 +150,31 @@ if TempProfiles == 1:
 
 
 #######################################
-# Histogram
+# Average Preheat Temperature
 #######################################
-if THistAve == 1:
+if AvePHTemp == 1:
+	# Create figure
 	plt.figure(figi)
 	figi += 1 
-	ix = np.arange(0,Tnumf)
+
+	# Bar locaitons
+	bar_loc = np.arange(0,enumf)
 
 	# Create Legend
 	plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$')
 	plt.scatter(None, None, 150, c='r', linewidths=0.1, marker=u'$\u26A1$')
-	plt.legend( ['No Ignition', 'Ignition'], loc='upper left')
+	plt.bar(0, 0, color=CUclrs[0])
+	plt.bar(0, 0, color=CUclrs[1])
+	plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'], loc='upper left')
 
-	plt.bar(ix, Tsmry['AvePreheatTemp'], yerr=Tsmry['AvePreheatTempStd'], color=CUclrs[0])
-	plt.xticks(ix, expID)
+	# create bars
+	for i in range(0, enumf):
+		if 'Road Mix' in elbl[i]:
+			plt.bar(bar_loc[i], Tsmry['AvePreheatTemp'][i], yerr=Tsmry['AvePreheatTempStd'][i], color=CUclrs[1])
+		else:
+			plt.bar(bar_loc[i], Tsmry['AvePreheatTemp'][i], yerr=Tsmry['AvePreheatTempStd'][i], color=CUclrs[0])
+	
+	plt.xticks(bar_loc, expID)
 	plt.ylabel('Temperature [$^\circ$C]')
 	plt.title('Average Preheat Temperatures')
 	plt.ylim(0,400)
@@ -169,25 +182,75 @@ if THistAve == 1:
 	tloc = tloc* 1.01
 
 		# Labels above bars
-	for i in range(0, Tnumf):
+	for i in range(0, enumf):
 		# Add labels to each bar with temperature value
-		plt.text(ix[i], tloc[i], '%0.f' % Tsmry['AvePreheatTemp'][i], horizontalalignment='center')
+		plt.text(bar_loc[i], tloc[i], '%0.f' % Tsmry['AvePreheatTemp'][i], horizontalalignment='center')
 
 	tloc = tloc + 10
 
 	# Plot snowflake (\u2744) or thunderbolt (\u26A1) for ignition
-	for i in range(0, Tnumf):
+	for i in range(0, enumf):
 		if igstr[i] == 'Ignition':
-			plt.text(ix[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
 		elif igstr[i] == 'No':
-			plt.text(ix[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
 		elif igstr[i] == 'Ignition without Propegation':
-			plt.text(ix[i], tloc[i], '\u26A1 ', c='r', horizontalalignment='center', size = 16)
-			plt.text(ix[i], tloc[i], '\u2744', c='c', size = 16)
+			plt.text(bar_loc[i], tloc[i], '\u26A1 ', c='r', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc[i], '\u2744', c='c', size = 16)
 		else:
-			plt.text(ix[i], tloc[i], '????', c='r', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc[i], '????', c='r', horizontalalignment='center', size = 16)
 
 	plt.savefig(figrootname + 'IgnitionTemps.png')
+
+#######################################
+# Average Preheat Temperature
+#######################################
+if PreheatTime == 1:
+	# Create figure
+	plt.figure(figi)
+	figi += 1 
+
+	# Bar locaitons
+	bar_loc = np.arange(0,enumf)
+
+	# Create Legend
+	plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$')
+	plt.scatter(None, None, 150, c='r', linewidths=0.1, marker=u'$\u26A1$')
+	plt.bar(0, 0, color=CUclrs[0])
+	plt.bar(0, 0, color=CUclrs[1])
+	plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'], loc='upper left')
+
+	for i in range(0, enumf):
+		if 'Road Mix' in elbl[i]:
+			plt.bar(bar_loc[i], Tsmry['PreheatTime'][i], color=CUclrs[1])
+		else:
+			plt.bar(bar_loc[i], Tsmry['PreheatTime'][i], color=CUclrs[0])
+	
+	# Plot snowflake (\u2744) or thunderbolt (\u26A1) for ignition
+	for i in range(0, enumf):
+		tloc = Tsmry['PreheatTime'][i] + 2
+
+		plt.text(bar_loc[i], tloc, '%0.f' % Tsmry['PreheatTime'][i], horizontalalignment='center')
+
+		tloc = tloc + 8
+
+		if igstr[i] == 'Ignition':
+			plt.text(bar_loc[i], tloc, '\u26A1', c='r', horizontalalignment='center', size = 16)
+		elif igstr[i] == 'No':
+			plt.text(bar_loc[i], tloc, '\u2744', c='c', horizontalalignment='center', size = 16)
+		elif igstr[i] == 'Ignition without Propegation':
+			plt.text(bar_loc[i], tloc, '\u26A1 ', c='r', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc, '\u2744', c='c', size = 16)
+		else:
+			plt.text(bar_loc[i], tloc, '????', c='r', horizontalalignment='center', size = 16)
+
+	
+	plt.xlabel('Experiment ID')
+	plt.xticks(bar_loc, expID)
+	plt.ylabel('Preheat Time [mins]')
+	plt.title('Time Heated Before Aeration')
+	plt.ylim(0, 325)
+	plt.savefig(figrootname + 'PreheatTimes.png')
 
 #######################################
 # Output temperature data to csv

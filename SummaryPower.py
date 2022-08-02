@@ -217,6 +217,18 @@ if BM == 1:
 		plt.title('Power Input on a Single Collector (A$_{Collector}$= '+ '%0.3f' % Ac + ' m$^2$)')
 		plt.legend(BMleg, ncol=2, loc='lower right')
 
+		# Plot snowflake (\u2744) or thunderbolt (\u26A1) for ignition
+		if igstr[i] == 'Ignition':
+			plt.text( bar_loc[i], tloc, '\u26A1', c='r', horizontalalignment='center', size = 16)
+		elif igstr[i] == 'No':
+			plt.text(bar_loc[i], tloc, '\u2744', c='c', horizontalalignment='center', size = 16)
+		elif igstr[i] == 'Ignition without Propegation':
+			plt.text(bar_loc[i], tloc, '\u26A1  ', c='r', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc, '  \u2744', c='c', horizontalalignment='center', size = 16)
+		else:
+			plt.text(bar_loc[i], tloc, '????', c='r', horizontalalignment='center', size = 16)
+			
+
 	#######################################
 	# Power input vs power output
 	#######################################
@@ -904,11 +916,22 @@ if ExpData == 1:
 		plt.figure()
 		figi += 1
 
+# Create Legend
+		plt.barh(0, 0, color=CUclrs[0])
+		plt.barh(0, 0, color=CUclrs[1])
+		plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$') # Snowflake
+		plt.scatter(None, None, 150, c='r', linewidths=0.1, marker=u'$\u26A1$') # Thunderbolt
+		plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'] , loc='upper left')
+
 		# Locations for bars
 		bar_loc = np.arange(0, enumf)
 
 		# Plot parameters
-		plt.bar(bar_loc, esmry['PinAve'], yerr=esmry['PinStd'], capsize=4, color=CUclrs[0])
+		for i in range(0, enumf):
+			if 'Road Mix' in elbl[i]:
+				plt.bar(bar_loc[i], esmry['PinAve'][i], yerr=esmry['PinStd'][i], capsize=4, color=CUclrs[1])
+			else:
+				plt.bar(bar_loc[i], esmry['PinAve'][i], yerr=esmry['PinStd'][i], capsize=4, color=CUclrs[0])
 		plt.ylabel('Average Power Input [W]')
 		plt.xlabel('Experiment ID')
 		plt.title('Average Power Input During Each Experiment for a Single Collector (A$_{Collector}$= '+ '%0.3f' % Ac + ' m$^2$)')
@@ -920,7 +943,20 @@ if ExpData == 1:
 
 		for i in range(0, enumf):
 			plt.text(bar_loc[i] , tloc[i], '%0.1f' % (esmry['PinAve'][i]), horizontalalignment='center')
+		
+			tloc[i] = tloc[i] + 10
+			# Plot snowflake (\u2744) or thunderbolt (\u26A1) for ignition
+			if igstr[i] == 'Ignition':
+				plt.text( bar_loc[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
+			elif igstr[i] == 'No':
+				plt.text(bar_loc[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
+			elif igstr[i] == 'Ignition without Propegation':
+				plt.text(bar_loc[i], tloc[i], '\u26A1  ', c='r', horizontalalignment='center', size = 16)
+				plt.text(bar_loc[i], tloc[i], '  \u2744', c='c', horizontalalignment='center', size = 16)
+			else:
+				plt.text(bar_loc[i], tloc[i], '????', c='r', horizontalalignment='center', size = 16)
 
+		plt.ylim(0,350)
 		plt.savefig(figrootname + 'Exp_AvePowIn_Bar.png')
 	
 	#######################################

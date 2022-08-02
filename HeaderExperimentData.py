@@ -20,10 +20,11 @@ e220712 = '220712_PoolSandGAC4Percent_GACBase/220712_PoolSandGAC4Percent_GACBase
 e220717 = '220717_PoolSand4PercentGAC_450mLGACBase/220717_PoolSand4PercentGAC_450mLGACBase_data.csv'
 e220719 = '220719_PoolSand4PercentGAC_450mLGACBase/220719_PoolSand4PercentGAC_450mLGACBase_data.csv'
 e220720 = '220720_PoolSand4PercentGAC_450mLGACBase/220720_PoolSand4PercentGAC_450mLGACBase_data.csv'
+e220730 = '220730_PoolSand4PercentGAC_450mLGACBase/220730_PoolSand4PercentGAC_450mLGACBase_data.csv'
 
-enames = [e220515, e220602, e220604, e220608, e220610, e220611, e220613, e220617, e220623, e220628, e220708, e220712, e220717, e220719, e220720]
+enames = [e220515, e220602, e220604, e220608, e220610, e220611, e220613, e220617, e220623, e220628, e220708, e220712, e220717, e220719, e220720, e220730]
 
-edatestrs = ['220515', '220602', '220604', '220608',  '220610', '220611', '220613', '220617', '220623', '220628', '220708', '220712', '220717', '220719', '220720']
+edatestrs = ['220515', '220602', '220604', '220608',  '220610', '220611', '220613', '220617', '220623', '220628', '220708', '220712', '220717', '220719', '220720', '220730']
 
 # Experiment label
 elbl220515 = ['GAC Soil 20 g/kg']
@@ -41,10 +42,11 @@ elbl220712 = ['GAC Pool Sand 40 g/kg on a 600 mL GAC bed']
 elbl220717 = ['GAC Pool Sand 40 g/kg on a 450 mL GAC bed']
 elbl220719 = ['GAC Pool Sand 40 g/kg on a 450 mL GAC bed']
 elbl220720 = ['GAC Pool Sand 40 g/kg on a 450 mL GAC bed']
+elbl220730 = ['GAC Pool Sand 40 g/kg on a 450 mL GAC bed']
 
-elbl = elbl220515 + elbl220602 + elbl220604 + elbl220608 + elbl220610 + elbl220611 +  elbl220613 + elbl220617 + elbl220623 + elbl220628 + elbl220708 + elbl220712 + elbl220717 + elbl220719 + elbl220720
+elbl = elbl220515 + elbl220602 + elbl220604 + elbl220608 + elbl220610 + elbl220611 +  elbl220613 + elbl220617 + elbl220623 + elbl220628 + elbl220708 + elbl220712 + elbl220717 + elbl220719 + elbl220720 + elbl220730
 
-elblidx = [elbl220515, elbl220602, elbl220604, elbl220608,  elbl220610, elbl220611, elbl220613, elbl220617, elbl220623, elbl220628, elbl220708, elbl220712, elbl220717, elbl220719, elbl220720]
+elblidx = [elbl220515, elbl220602, elbl220604, elbl220608,  elbl220610, elbl220611, elbl220613, elbl220617, elbl220623, elbl220628, elbl220708, elbl220712, elbl220717, elbl220719, elbl220720, elbl220730]
 
 
 # Experiment Identifier
@@ -63,8 +65,9 @@ expID220712 = ['N']
 expID220717 = ['O']
 expID220719 = ['P']
 expID220720 = ['Q']
+expID220730 = ['R']
 
-expID = expID220515 + expID220602 + expID220604 + expID220608 + expID220610 + expID220611 +  expID220613 + expID220617 + expID220623 + expID220628 + expID220708 + expID220712 + expID220717 + expID220719 + expID220720
+expID = expID220515 + expID220602 + expID220604 + expID220608 + expID220610 + expID220611 +  expID220613 + expID220617 + expID220623 + expID220628 + expID220708 + expID220712 + expID220717 + expID220719 + expID220720 + expID220730
 
 
 # Time power on
@@ -83,8 +86,9 @@ etistr220712 = ['12:25:00']
 etistr220717 = ['10:41:00']
 etistr220719 = ['10:37:00']
 etistr220720 = ['10:38:00']
+etistr220730 = ['9:37:00']
 
-etistr = etistr220515 + etistr220602 + etistr220604 + etistr220608 + etistr220610 + etistr220611 + etistr220613 + etistr220617 + etistr220623 + etistr220628 + etistr220708 + etistr220712 + etistr220717 + etistr220719 + etistr220720
+etistr = etistr220515 + etistr220602 + etistr220604 + etistr220608 + etistr220610 + etistr220611 + etistr220613 + etistr220617 + etistr220623 + etistr220628 + etistr220708 + etistr220712 + etistr220717 + etistr220719 + etistr220720 + etistr220730
 
 # Time power off
 etfstr220515 = ['17:32:00']
@@ -102,8 +106,9 @@ etfstr220712 = ['14:18:00']
 etfstr220717 = ['14:34:00']
 etfstr220719 = ['12:40:00']
 etfstr220720 = ['11:55:00']
+etfstr220730 = ['12:35:00']
 
-etfstr = etfstr220515 + etfstr220602 + etfstr220604 + etfstr220608 + etfstr220610 + etfstr220611 + etfstr220613 + etfstr220617 + etfstr220623 + etfstr220628 + etfstr220708 + etfstr220712 + etfstr220717 + etfstr220719 + etfstr220720
+etfstr = etfstr220515 + etfstr220602 + etfstr220604 + etfstr220608 + etfstr220610 + etfstr220611 + etfstr220613 + etfstr220617 + etfstr220623 + etfstr220628 + etfstr220708 + etfstr220712 + etfstr220717 + etfstr220719 + etfstr220720 + etfstr220730
 
 # Collector/Fiber Pairs in use for each experiment
 cf220517 = ['C1FC, C2FA, C3FF']
@@ -121,8 +126,9 @@ cf220712 = ['All Four']
 cf220717 = ['All Four']
 cf220719 = ['All Four']
 cf220720 = ['All Four']
+cf220730 = ['All Four']
 
-cfstr = cf220517 + cf220602 + cf220604 + cf220608 + cf220610 + cf220611 + cf220613 + cf220617 + cf220623 + cf220628 + cf220708 + cf220712 + cf220717 + cf220719 + cf220720
+cfstr = cf220517 + cf220602 + cf220604 + cf220608 + cf220610 + cf220611 + cf220613 + cf220617 + cf220623 + cf220628 + cf220708 + cf220712 + cf220717 + cf220719 + cf220720 + cf220730
 
 # Initial temperature filter strings
 Tempi220515 = [0]
@@ -140,8 +146,9 @@ Tempi220712 = [0]
 Tempi220717 = [0]
 Tempi220719 = [0]
 Tempi220720 = [0]
+Tempi220730 = [0]
 
-Tempi = Tempi220515 + Tempi220602  + Tempi220604  + Tempi220608  + Tempi220610  + Tempi220611  + Tempi220613  + Tempi220617  + Tempi220623  + Tempi220628  + Tempi220708  + Tempi220712  + Tempi220717  + Tempi220719 + Tempi220720
+Tempi = Tempi220515 + Tempi220602  + Tempi220604  + Tempi220608  + Tempi220610  + Tempi220611  + Tempi220613  + Tempi220617  + Tempi220623  + Tempi220628  + Tempi220708  + Tempi220712  + Tempi220717  + Tempi220719 + Tempi220720 + Tempi220730
 
 # Aeration time strings
 AirT220515 = ['17:21:00']
@@ -159,8 +166,9 @@ AirT220712 = ['14:00:00']
 AirT220717 = ['14:14:00']
 AirT220719 = ['12:33:00']
 AirT220720 = ['X']
+AirT220730 = ['12:07:00']
 
-AirT = AirT220515 + AirT220602 + AirT220604 + AirT220608 + AirT220610 + AirT220611 + AirT220613 + AirT220617 + AirT220623 + AirT220628 + AirT220708 + AirT220712 + AirT220717 + AirT220719 + AirT220720
+AirT = AirT220515 + AirT220602 + AirT220604 + AirT220608 + AirT220610 + AirT220611 + AirT220613 + AirT220617 + AirT220623 + AirT220628 + AirT220708 + AirT220712 + AirT220717 + AirT220719 + AirT220720 + AirT220730
 
 # Final temperature filter strings
 Tempf220515 = ['17:55:00']
@@ -178,8 +186,9 @@ Tempf220712 = [0]
 Tempf220717 = [0]
 Tempf220719 = [0]
 Tempf220720 = [0]
+Tempf220730 = [0]
 
-Tempf = Tempf220515 + Tempf220602  + Tempf220604  + Tempf220608  + Tempf220610  + Tempf220611  + Tempf220613  + Tempf220617  + Tempf220623  + Tempf220628  + Tempf220708  + Tempf220712  + Tempf220717  + Tempf220719 + Tempf220720
+Tempf = Tempf220515 + Tempf220602  + Tempf220604  + Tempf220608  + Tempf220610  + Tempf220611  + Tempf220613  + Tempf220617  + Tempf220623  + Tempf220628  + Tempf220708  + Tempf220712  + Tempf220717  + Tempf220719 + Tempf220720 + Tempf220730
 
 # Ignition string
 ig220517 = ['No']
@@ -197,8 +206,9 @@ ig220712 = ['Ignition']
 ig220717 = ['Ignition']
 ig220719 = ['No']
 ig220720 = ['No']
+ig220730 = ['Ignition']
 
-igstr = ig220517 + ig220602 + ig220604 + ig220608 + ig220610 + ig220611 + ig220613 + ig220617 + ig220623 + ig220628 + ig220708 + ig220712 + ig220717 + ig220719 + ig220720
+igstr = ig220517 + ig220602 + ig220604 + ig220608 + ig220610 + ig220611 + ig220613 + ig220617 + ig220623 + ig220628 + ig220708 + ig220712 + ig220717 + ig220719 + ig220720 + ig220730
 
 # Contamination concentrations [g/kg]
 conc220517 = [20]
@@ -216,8 +226,9 @@ conc220712 = [40]
 conc220717 = [40]
 conc220719 = [40]
 conc220720 = [40]
+conc220730 = [40]
 
-conc = conc220517 + conc220602 + conc220604 + conc220608 + conc220610 + conc220611 + conc220613 + conc220617 + conc220623 + conc220628 + conc220708 + conc220712 + conc220717 + conc220719 + conc220720
+conc = conc220517 + conc220602 + conc220604 + conc220608 + conc220610 + conc220611 + conc220613 + conc220617 + conc220623 + conc220628 + conc220708 + conc220712 + conc220717 + conc220719 + conc220720 + conc220730
 
 # GAC Bed Volume [mL]
 GACbed220517 = [0]
@@ -235,6 +246,7 @@ GACbed220712 = [600]
 GACbed220717 = [450]
 GACbed220719 = [450]
 GACbed220720 = [450]
+GACbed220730 = [450]
 
-GACbed = GACbed220517 + GACbed220602 + GACbed220604 + GACbed220608 + GACbed220610 + GACbed220611 + GACbed220613 + GACbed220617 + GACbed220623 + GACbed220628 + GACbed220708 + GACbed220712 + GACbed220717 + GACbed220719 + GACbed220720
+GACbed = GACbed220517 + GACbed220602 + GACbed220604 + GACbed220608 + GACbed220610 + GACbed220611 + GACbed220613 + GACbed220617 + GACbed220623 + GACbed220628 + GACbed220708 + GACbed220712 + GACbed220717 + GACbed220719 + GACbed220720 + GACbed220730
 
