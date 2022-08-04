@@ -79,16 +79,12 @@ print('Collector Area', '%0.3f' % Ac, 'm2')
 # Get color options
 [clrs, CUclrs] = daf.defcolors(len(BMlbl))
 
-# Color and font settings for plots
-mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs) 
-mpl.rcParams["figure.figsize"] = (12, 6.75)
-# mpl.rcParams['font.size'] = 15
-# figrootname = './Figures/' + datetime.now().strftime('%y%m%d') + '_' # Figure Output name root
-figrootname = './Figures/' # Figure Output name root
+# Figure settings
+mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs)  # Define color cycle
+plt.style.use('./FigStyle.mplstyle') # Load figure settings from style file
+figrootname = './Figures/' # Figure Output name root | optional: datetime.now().strftime('%y%m%d')
 figi = 1 # Initiate igure iterator
-
-
-
+figtitles = 0 # Include titles on figures?
 
 ############################################################################################
 ############################################################################################
@@ -199,8 +195,12 @@ if BM == 1:
 		
 		plt.xlabel('Run Time [min]')
 		plt.ylabel('Power Output [W]')
-		plt.title('All Available Power Benchmark Data')
+		
 		plt.legend(BMleg, ncol=2, loc='lower right')
+
+		if figtitles == 1:
+			plt.title('All Available Power Benchmark Data')
+
 	
 	#######################################
 	# Power input over run time
@@ -214,20 +214,10 @@ if BM == 1:
 			plt.plot(BMdata[i]['RunTime'], BMdata[i]['Pin'])
 		plt.xlabel('Run Time [min]')
 		plt.ylabel('Power Input [W]')
-		plt.title('Power Input on a Single Collector (A$_{Collector}$= '+ '%0.3f' % Ac + ' m$^2$)')
 		plt.legend(BMleg, ncol=2, loc='lower right')
 
-		# Plot snowflake (\u2744) or thunderbolt (\u26A1) for ignition
-		if igstr[i] == 'Ignition':
-			plt.text( bar_loc[i], tloc, '\u26A1', c='r', horizontalalignment='center', size = 16)
-		elif igstr[i] == 'No':
-			plt.text(bar_loc[i], tloc, '\u2744', c='c', horizontalalignment='center', size = 16)
-		elif igstr[i] == 'Ignition without Propegation':
-			plt.text(bar_loc[i], tloc, '\u26A1  ', c='r', horizontalalignment='center', size = 16)
-			plt.text(bar_loc[i], tloc, '  \u2744', c='c', horizontalalignment='center', size = 16)
-		else:
-			plt.text(bar_loc[i], tloc, '????', c='r', horizontalalignment='center', size = 16)
-			
+		if figtitles == 1:
+			plt.title('Power Input on a Single Collector (A$_{Collector}$= '+ '%0.3f' % Ac + ' m$^2$)')			
 
 	#######################################
 	# Power input vs power output
@@ -242,10 +232,12 @@ if BM == 1:
 			plt.scatter(BMdata[i]['Pin'], BMdata[i]['Pout'])
 		plt.xlabel('Power Input [W]')
 		plt.ylabel('Power Output[W]')
-		plt.title('Power Input vs. Power Output for all Benchmarks')
 		plt.legend(BMleg, ncol=2, loc='upper left')
 		plt.xlim([0, 300])
 		plt.savefig(figrootname + 'BM_AllPinPout.png')
+
+		if figtitles == 1:
+			plt.title('Power Input vs. Power Output for all Benchmarks')
 		
 
 	#######################################
@@ -264,7 +256,9 @@ if BM == 1:
 		plt.xlim([0, 300])
 		plt.xlabel('Power Input [W]')
 		plt.ylabel('Power Output[W]')
-		plt.title('Averaged Power Input vs. Power Output')
+		
+		if figtitles == 1:
+			plt.title('Averaged Power Input vs. Power Output')
 	
 	#######################################
 	# Power input vs efficiency
@@ -278,9 +272,11 @@ if BM == 1:
 			plt.scatter(BMdata[i]['Pin'], BMdata[i]['Eff'])
 		plt.xlabel('Power Input [W]')
 		plt.ylabel('Efficiency [%]')
-		plt.title('Power Input vs. Efficiency')
 		plt.legend(BMleg, ncol=2, loc='upper left')
 		plt.xlim([0, 300])
+
+		if figtitles == 1:
+			plt.title('Power Input vs. Efficiency')
 	
 		plt.savefig(figrootname + 'BM_PinEff.png')
 	
@@ -298,7 +294,9 @@ if BM == 1:
 		
 		plt.xlabel('Power Input [W]')
 		plt.ylabel('Efficiency [%]')
-		plt.title('Average Power Input vs. Efficiency for Benchmarks')
+
+		if figtitles == 1:
+			plt.title('Average Power Input vs. Efficiency for Benchmarks')
 
 		plt.savefig(figrootname + 'BM_AvePinEff.png')
 
@@ -314,10 +312,12 @@ if BM == 1:
 			plt.scatter(BMdata[i]['Eff'], BMdata[i]['Pout'])
 		plt.xlabel('Efficiency [%]')
 		plt.ylabel('Power Output [W]')
-		plt.title('Efficiency vs. Power Output for Benchmarks')
 		plt.legend(BMleg, ncol=2, loc='upper left')
 		plt.ylim([0,90])
 		daf.linreg(BMdata[i]['Eff'], BMdata[i]['Pout'], 0, 0)
+
+		if figtitles == 1:
+			plt.title('Efficiency vs. Power Output for Benchmarks')
 
 	#######################################
 	# Average Efficiency vs. power
@@ -337,7 +337,9 @@ if BM == 1:
 		
 		plt.xlabel('Efficiency [%]')
 		plt.ylabel('Power Output[W]')
-		plt.title('Average Efficiency vs. Power Output for Benchmark Averages')
+
+		if figtitles == 1:
+			plt.title('Average Efficiency vs. Power Output for Benchmark Averages')
 
 	
 ##############################################################################
@@ -605,9 +607,11 @@ if SubSet == 1:
 		plt.ylabel('Efficiency [%]')
 		plt.xlabel('Collector/Fiber Configuration')
 		plt.xticks(bar_loc, SSn)
-		plt.title('Average Efficiencies for Select Collector/Fiber Pairs')
 		plt.legend(['Overall Average', 'Filtered for Irradiances >' + str(PyHiThreshold)], loc='upper right')
 		plt.ylim([0,31])
+
+		if figtitles == 1:
+			plt.title('Average Efficiencies for Select Collector/Fiber Pairs')
 
 		
 		# Build Labels for the top of each bar
@@ -642,9 +646,11 @@ if SubSet == 1:
 		# Plot settings
 		plt.xlabel('Power Input [W]')
 		plt.ylabel('Power Output [W]')
-		plt.title('Power Input vs. Power Output for Select Collector/Fiber Pairs')
 		plt.legend(SSleg[0] + SSleg[1] + SSleg[2] + SSleg[3], loc='upper left')
 		plt.xlim([0, 300])
+
+		if figtitles == 1:
+			plt.title('Power Input vs. Power Output for Select Collector/Fiber Pairs')
 
 		plt.savefig(figrootname + 'BM_SelectCFs_PinPout.png')
 	
@@ -672,10 +678,12 @@ if SubSet == 1:
 			plt.subplot(2,2,i+1)
 			plt.xlabel('Power Input [W]')
 			plt.ylabel('Power Output[W]')
-			plt.title(SSn[i])
 			plt.suptitle('Benchmark Power Data with Trendlines')
 			plt.legend(SSleg[i], loc='upper left')
 			daf.linreg(SSdata[i]['Pin'], SSdata[i]['Pout'], 200, 10) # plot trentline, output coefficients
+
+			if figtitles == 1:
+				plt.title(SSn[i])
 		plt.subplots_adjust(hspace=0.3)
 		plt.savefig(figrootname + 'BM_SelectCF_Subplots.png')
 	
@@ -704,10 +712,13 @@ if SubSet == 1:
 			plt.subplot(2,2,i+1)
 			plt.xlabel('Efficiency')
 			plt.ylabel('Power Input [W]')
-			plt.title('Power Input vs. Efficiency for ' + SSn[i])
 			plt.legend(SSleg[i], loc='upper left')
 			daf.linreg(SSdata[i]['Eff'], SSdata[i]['Pin'], 0, 0)
 			daf.quadreg(SSdata[i]['Eff'], SSdata[i]['Pin'], 0, 0)
+
+			if figtitles == 1:
+				plt.title('Power Input vs. Efficiency for ' + SSn[i])
+
 		plt.subplots_adjust(hspace=0.3)
 
 	########################################
@@ -734,10 +745,13 @@ if SubSet == 1:
 			plt.subplot(2,2,i+1)
 			plt.xlabel('Efficiency')
 			plt.ylabel('Power Output [W]')
-			plt.title('Efficiency vs. Power Output for ' + SSn[i])
 			plt.legend(SSleg[i], loc='upper left')
 			daf.linreg(SSdata[i]['Eff'], SSdata[i]['Pout'], 0, 0)
 			daf.quadreg(SSdata[i]['Eff'], SSdata[i]['Pout'], 0, 0)
+
+			if figtitles == 1:
+				plt.title('Efficiency vs. Power Output for ' + SSn[i])
+
 		plt.subplots_adjust(hspace=0.35)
 	
 	########################################
@@ -762,9 +776,12 @@ if SubSet == 1:
 			plt.subplot(2,2,i+1)
 			plt.xlabel('Power Input [W]')
 			plt.ylabel('Power Output [W]')
-			plt.title('P$_{in}$ vs P$_{out}$ for ' + SSn[i])
 			plt.legend(SSleg[i], loc='lower right')
 			daf.linreg(SSPinAve[i], SSPoutAve[i], 0, 0)
+
+			if figtitles == 1:
+				plt.title('P$_{in}$ vs P$_{out}$ for ' + SSn[i])
+		
 		plt.subplots_adjust(hspace=0.275)
 
 
@@ -903,10 +920,12 @@ if ExpData == 1:
 			
 			plt.scatter(datai['Time'], datai['PyrE'])
 			plt.scatter(dataif['Time'], dataif['PyrE'])
-			plt.title('Pyrheliometer Reading for Experiment ' + eleg[i])
 			plt.xlabel('Time [MDT]')
 			plt.ylabel(['Pyrheliometer Reading [W/m$^2$]'])
 			plt.legend(['Unfiltered Data', 'Data Filtered for Time Collectors Uncovered'], loc='lower left')
+
+			if figtitles == 1:
+				plt.title('Pyrheliometer Reading for Experiment ' + eleg[i])
 
 	#######################################
 	# Plot Average power input for each experiment on a bar chart
@@ -934,8 +953,10 @@ if ExpData == 1:
 				plt.bar(bar_loc[i], esmry['PinAve'][i], yerr=esmry['PinStd'][i], capsize=4, color=CUclrs[0])
 		plt.ylabel('Average Power Input [W]')
 		plt.xlabel('Experiment ID')
-		plt.title('Average Power Input During Each Experiment for a Single Collector (A$_{Collector}$= '+ '%0.3f' % Ac + ' m$^2$)')
 		plt.xticks(bar_loc, expID)
+
+		if figtitles == 1:
+			plt.title('Average Power Input During Each Experiment for a Single Collector (A$_{Collector}$= '+ '%0.3f' % Ac + ' m$^2$)')
 		
 		# Create labels on top of bars
 		tloc = esmry['PinAve'] + esmry['PinStd'] # Text location
@@ -990,14 +1011,16 @@ if ExpData == 1:
 
 			TLx = np.arange(SSdata[i]['Pin'].min(), SSdata[i]['Pin'].max())
 			plt.plot(TLx, CFsmry['EffAve'][i]*TLx, 'b:')
-			plt.text(FAtx[i], FAty[i], 'y = ' + '%.1F' % (CFsmry['EffAve'][i]*100) + 'x\nR$^2$ = '+ '%0.2F' % FA_r2  + '\nOverall Average Efficiency', c='b') 
+			plt.text(FAtx[i], FAty[i], 'y = ' + '%0.3F' % CFsmry['EffAve'][i] + 'x\nR$^2$ = '+ '%0.2F' % FA_r2  + '\nOverall Average Efficiency', c='b') 
 			plt.plot(TLx, CFsmry['PyHi_EffAve'][i]*TLx, 'g-.')
-			plt.text(PyHitx[i], PyHity[i], 'y = ' + '%.1F' % (CFsmry['PyHi_EffAve'][i]*100) + 'x\nR$^2$ = '+ '%0.2F' % PyHi_r2  + '\nEfficiency filtered for high irradiances', c='g')
+			plt.text(PyHitx[i], PyHity[i], 'y = ' + '%0.3F' % CFsmry['PyHi_EffAve'][i] + 'x\nR$^2$ = '+ '%0.2F' % PyHi_r2  + '\nEfficiency filtered for high irradiances', c='g')
 
 			# Plot parameters
 			plt.xlabel('Power Input [W]')
 			plt.ylabel('Power Output [W]')
-			plt.title('Benchmark Power In vs. Power Out for ' + SSn[i])
+
+			if figtitles == 1:
+				plt.title('Benchmark Power In vs. Power Out for ' + SSn[i])
 
 			plt.savefig(figrootname + 'BM_PinPoutTLs_Unfiltered' + SSn[i] + '.png')
 
@@ -1034,9 +1057,10 @@ if ExpData == 1:
 			# Plot parameters
 			plt.xlabel('Power Input [W]')
 			plt.ylabel('Power Output [W]')
-			plt.title('Benchmark Power In vs. Power Out for ' + SSn[i])
-
 			plt.legend(['Unfiltered', 'Irradiances Above ' + str(PyHiThreshold)])
+
+			if figtitles == 1:
+				plt.title('Benchmark Power In vs. Power Out for ' + SSn[i] + 'with High Irradiance Data')
 
 			plt.savefig(figrootname + 'BM_PinPoutTLs_UnfilteredWithPyHi' + SSn[i] + '.png')
 
@@ -1076,7 +1100,9 @@ if ExpData == 1:
 			# Plot parameters
 			plt.xlabel('Power Input [W]')
 			plt.ylabel('Power Output [W]')
-			plt.title('Benchmark Data Filtered for High Irradiance with Trendlines for ' + SSn[i])
+
+			if figtitles == 1:
+				plt.title('Benchmark Data Filtered for High Irradiance with Trendlines for ' + SSn[i])
 
 			plt.savefig(figrootname + 'BM_PinPoutTLs_PyHi_' + SSn[i] + '.png')
 
@@ -1156,10 +1182,14 @@ if ExpData == 1:
 
 		# Plot parameters
 		plt.xticks(bar_loc, expID)
+		# plt.yticks(fontsize=14)
+		# plt.ylabel('Estimated Power Output [W]', fontweight='bold', fontsize=15)
 		plt.ylabel('Estimated Power Output [W]')
 		plt.xlabel('Experiment ID')
 		plt.ylim(0, max(Pout_Total) + 25)
-		plt.title('Power Estimations For Each Experiment')
+
+		if figtitles == 1:
+			plt.title('Power Estimations For Each Experiment', fontsize=20)
 	
 		plt.savefig(figrootname + 'ExpTotalPout_Bar' +'.png')
 

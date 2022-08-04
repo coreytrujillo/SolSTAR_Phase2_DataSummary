@@ -1,0 +1,8 @@
+figure.figsize :    12, 6.75 # Figure size : 16 x 9 ratio
+savefig.dpi :       500 # Resolution for saved figures
+axes.labelsize :    15  # Font size of axis labels
+xtick.labelsize :   12 # Font size of xticks
+ytick.labelsize :   12  # Font size of yticks
+axes.labelweight :  bold # Boldface axis labels
+figure.titlesize :  20 # Figure title size
+axes.titlesize :    20 # title fontsize

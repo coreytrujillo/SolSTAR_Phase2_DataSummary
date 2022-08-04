@@ -32,9 +32,9 @@ enumf = len(elbl) # Number of filtered datasets
 # Set up plotting parameters
 #######################################
 figi = 1 # Figure iterator
-# figrootname = './Figures/' + datetime.now().strftime('%y%m%d') + '_' # Root file name for saving figures
 figrootname = './Figures/' # Root file name for saving figures
-
+figtitles = 0 # Include figure titles
+plt.style.use('./FigStyle.mplstyle') # Load figure settings from style file
 
 # Get color options
 [clrs, CUclrs] = daf.defcolors(enumf)
@@ -143,7 +143,9 @@ if TempProfiles == 1:
 			plt.plot(edata[i]['Time'], edata[i][Tagstr[i][j]])
 		
 		plt.legend(Tagstr[i])
-		plt.title(edatestrs[efnum[i]] + ' ' + elbl[i])
+		
+		if figtitles == 1:
+			plt.title(edatestrs[efnum[i]] + ' ' + elbl[i])
 		
 		if TimeB4Air[i] > 0:
 			plt.plot([AirTime[i], AirTime[i]], [0, Tmax[i]], 'k:')
@@ -176,8 +178,12 @@ if AvePHTemp == 1:
 	
 	plt.xticks(bar_loc, expID)
 	plt.ylabel('Temperature [$^\circ$C]')
-	plt.title('Average Preheat Temperatures')
 	plt.ylim(0,400)
+	plt.xlabel('Experiment ID')
+
+	if figtitles == 1:
+		plt.title('Average Preheat Temperatures')
+
 	tloc = Tsmry['AvePreheatTemp'] + Tsmry['AvePreheatTempStd']
 	tloc = tloc* 1.01
 
@@ -200,10 +206,10 @@ if AvePHTemp == 1:
 		else:
 			plt.text(bar_loc[i], tloc[i], '????', c='r', horizontalalignment='center', size = 16)
 
-	plt.savefig(figrootname + 'IgnitionTemps.png')
+	plt.savefig(figrootname + 'PreheatTemps.png')
 
 #######################################
-# Average Preheat Temperature
+# Average Preheat Times
 #######################################
 if PreheatTime == 1:
 	# Create figure
@@ -248,8 +254,11 @@ if PreheatTime == 1:
 	plt.xlabel('Experiment ID')
 	plt.xticks(bar_loc, expID)
 	plt.ylabel('Preheat Time [mins]')
-	plt.title('Time Heated Before Aeration')
 	plt.ylim(0, 325)
+
+	if figtitles == 1:
+		plt.title('Time Heated Before Aeration')
+
 	plt.savefig(figrootname + 'PreheatTimes.png')
 
 #######################################

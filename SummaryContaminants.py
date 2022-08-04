@@ -20,12 +20,14 @@ enumf = len(elbl)
 [clrs, CUclrs] = daf.defcolors(enumf)
 
 # Color and font settings for plots
-mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs) 
-mpl.rcParams["figure.figsize"] = (12, 6.75)
+mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs)
+plt.style.use('./FigStyle.mplstyle') # Load figure settings from style file
+# mpl.rcParams["figure.figsize"] = (12, 6.75)
 # mpl.rcParams['font.size'] = 15
 # figrootname = './Figures/' + datetime.now().strftime('%y%m%d') + '_' # Figure Output name root
 figrootname = './Figures/' # Figure Output name root
 figi = 1 # Initiate igure iterator
+figtitles = 0 # Include titles on figures
 
 
 
@@ -90,7 +92,8 @@ for i in range(0, enumf):
     else:
         ax.text(bar_loc[i], tloc, '????', c='r', horizontalalignment='center', size = 16)
 
-plt.title('Soil Contaminant Composition and GAC Bed Depth')
+if figtitles == 1:
+    plt.title('Soil Contaminant Composition and GAC Bed Depth')
 
 plt.savefig(figrootname + 'ContaminantComparison.png')
 
