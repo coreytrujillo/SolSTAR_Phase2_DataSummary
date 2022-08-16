@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Date Strings
-BMdatestrs = ['220313', '220314', '220315', '220324', '220331', '220515', '220602', '220604', '220615', '220715']
+BMdatestrs = ['220313', '220314', '220315', '220324', '220331', '220515', '220602', '220604', '220615', '220715', '220813']
 
 # File Location and Names for power benchmarks
 fpath = '../../Box_Experiments/'
@@ -16,8 +16,10 @@ f220602 = '220602_SingleChannel_GACSoil/220602_PowerBenchmark_data.csv'
 f220604 = '220604_SingleChannel_GACSoil/220604_PowerBenchmark_data.csv'
 f220615 = '220615_PowerBenchmark/220615_PowerBenchmark_data.csv'
 f220715 = '220715_PowerBenchmark/220715_PowerBenchmark_data.csv'
+f220813 = '220813_PowerBenchmark/220813_PowerBenchmark_data.csv'
 
-BMfnames = [f220313, f220314, f220315, f220324, f220331, f220515, f220602, f220604, f220615, f220715] # Array of file names
+
+BMfnames = [f220313, f220314, f220315, f220324, f220331, f220515, f220602, f220604, f220615, f220715, f220813] # Array of file names
 
 # Labels
 lbl220313 = ['C1 FA Before Cleaning', 'C1 FA After Cleaning', 'C1 FB', 'C1 FC', 'C1 FD Backwards', 'C1 FE']
@@ -30,9 +32,10 @@ lbl220602 = ['C1 FC', 'C2 FA', 'C3 FF']
 lbl220604 = ['C1 FC', 'C3 FF', 'C4 FD']
 lbl220615 = ['C1 FC', 'C2 FA', 'C3 FF', 'C4 FD']
 lbl220715 = ['C4 FD Before Windex', 'C4 FD After Windex', 'C2 FA Before Windex', 'C2 FA After Windex', 'C1 FC Before Windex', 'C1 FC After Windex']
+lbl220813 = ['C3 FF', 'C2 FA', 'C1 FC', 'C4 FD']
 
 BMlbl = lbl220313 + lbl220314 + lbl220315 + lbl220324 + lbl220331 + lbl220515 + lbl220602 + lbl220604 + lbl220615 + lbl220715 # Array of labels
-lblidx = [lbl220313, lbl220314, lbl220315, lbl220324, lbl220331, lbl220515, lbl220602, lbl220604, lbl220615, lbl220715] # Label array for indexing 
+lblidx = [lbl220313, lbl220314, lbl220315, lbl220324, lbl220331, lbl220515, lbl220602, lbl220604, lbl220615, lbl220715, lbl220813] # Label array for indexing 
 
 # Initial time strings
 tistr220313 = ['12:33:00', '12:40:00', '13:08:00', '13:39:00', '14:21:00', '14:50:00']
@@ -45,8 +48,9 @@ tistr220602 = ['12:36:00', '13:07:00', '13:31:00']
 tistr220604 = ['10:45:00', '11:06:00', '11:25:00']
 tistr220615 = ['12:41:00', '13:10:00', '13:44:00', '14:15:00']
 tistr220715 = ['11:37:00', '12:10:00', '12:41:00', '12:58:00', '13:33:00', '13:47:00']
+tistr220813 = ['12:46:00', '13:12:00', '13:46:00', '14:13:00']
 
-tistr = tistr220313 + tistr220314 + tistr220315 + tistr220324 + tistr220331 + tistr220515 + tistr220602 + tistr220604 + tistr220615 + tistr220715 # Array of inital time srings
+tistr = tistr220313 + tistr220314 + tistr220315 + tistr220324 + tistr220331 + tistr220515 + tistr220602 + tistr220604 + tistr220615 + tistr220715 + tistr220813 # Array of inital time srings
 
 # Final time strings
 tfstr220313 = ['12:38:00', '12:45:00', '13:18:00', '13:52:00', '14:30:00', '14:58:00']
@@ -59,5 +63,6 @@ tfstr220602 = ['12:47:00', '13:14:00', '13:40:00']
 tfstr220604 = ['10:52:00', '11:12:00', '11:31:00']
 tfstr220615 = ['12:53:00', '13:20:00', '13:56:00', '14:27:00']
 tfstr220715 = ['11:58:00', '12:20:00', '12:51:00', '13:09:00', '13:39:00', '14:08:00']
+tfstr220813 = ['12:56:00', '13:22:00', '13:56:00', '14:23:00']
 
-tfstr = tfstr220313 + tfstr220314 + tfstr220315 + tfstr220324 + tfstr220331 + tfstr220515 + tfstr220602 + tfstr220604 + tfstr220615 + tfstr220715 # Array of final time srings
+tfstr = tfstr220313 + tfstr220314 + tfstr220315 + tfstr220324 + tfstr220331 + tfstr220515 + tfstr220602 + tfstr220604 + tfstr220615 + tfstr220715 + tfstr220813 # Array of final time srings

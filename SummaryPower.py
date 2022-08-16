@@ -56,6 +56,7 @@ if ExpData == 1:
 	AvePinPoutTLs = 1 # Plot average benchmark data and experimental data with trendlines
 	CFPinPout = 1 # Plot aveage power in vs. Power out
 	PoutHist = 1 # Plot a histogram of total power for each experiment
+	PoutHistCombined = 1 # Histogram of combined power output for each experiment 
 
 ############################################################################################
 # Do not edit below this line
@@ -84,7 +85,7 @@ mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs)  # Define color cycle
 plt.style.use('./FigStyle.mplstyle') # Load figure settings from style file
 figrootname = './Figures/' # Figure Output name root | optional: datetime.now().strftime('%y%m%d')
 figi = 1 # Initiate igure iterator
-figtitles = 0 # Include titles on figures?
+figtitles = 1 # Include titles on figures?
 
 ############################################################################################
 ############################################################################################
@@ -935,7 +936,7 @@ if ExpData == 1:
 		plt.figure()
 		figi += 1
 
-# Create Legend
+		# Create Legend
 		plt.barh(0, 0, color=CUclrs[0])
 		plt.barh(0, 0, color=CUclrs[1])
 		plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$') # Snowflake
@@ -947,7 +948,7 @@ if ExpData == 1:
 
 		# Plot parameters
 		for i in range(0, enumf):
-			if 'Road Mix' in elbl[i]:
+			if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
 				plt.bar(bar_loc[i], esmry['PinAve'][i], yerr=esmry['PinStd'][i], capsize=4, color=CUclrs[1])
 			else:
 				plt.bar(bar_loc[i], esmry['PinAve'][i], yerr=esmry['PinStd'][i], capsize=4, color=CUclrs[0])
@@ -1191,7 +1192,59 @@ if ExpData == 1:
 		if figtitles == 1:
 			plt.title('Power Estimations For Each Experiment', fontsize=20)
 	
-		plt.savefig(figrootname + 'ExpTotalPout_Bar' +'.png')
+		plt.savefig(figrootname + 'ExpTotalPout_Bar.png')
+
+		if PoutHistCombined == 1:
+			# Set up figure
+			plt.figure(figi)
+			figi += 1
+
+			# Create Legend
+			plt.barh(0, 0, color=CUclrs[0])
+			plt.barh(0, 0, color=CUclrs[1])
+			plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$') # Snowflake
+			plt.scatter(None, None, 150, c='r', linewidths=0.1, marker=u'$\u26A1$') # Thunderbolt
+			plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'], loc='upper left')
+
+			# x-axis values for histogram plot
+			bar_loc = np.arange(0,enumf) 
+
+			for i in range(0, enumf):
+				if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
+					plt.bar(bar_loc[i], esmry['PoutTotalEst_TL'][i], color=CUclrs[1]) # [i], yerr=esmry['PinStd'][i], capsize=4
+				else:
+					plt.bar(bar_loc[i], esmry['PoutTotalEst_TL'][i], color=CUclrs[0]) # , yerr=esmry['PinStd'][i], capsize=4, 
+			
+			tloc = esmry['PoutTotalEst_TL'] + 2
+
+			for i in range(0, enumf):
+				plt.text(bar_loc[i], tloc[i], "%.0f" % esmry['PoutTotalEst_TL'][i], horizontalalignment='center')
+
+			tloc = esmry['PoutTotalEst_TL'] + 9
+
+			for i in range(0, enumf):
+				if igstr[i] == 'Ignition':
+					plt.text( bar_loc[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
+				elif igstr[i] == 'No':
+					plt.text(bar_loc[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
+				elif igstr[i] == 'Ignition without Propegation':
+					plt.text(bar_loc[i], tloc[i], '\u26A1  ', c='r', horizontalalignment='center', size = 16)
+					plt.text(bar_loc[i], tloc[i], '  \u2744', c='c', horizontalalignment='center', size = 16)
+				else:
+					plt.text(bar_loc[i], tloc[i], '????', c='r', horizontalalignment='center', size = 16)
+			
+			plt.xticks(bar_loc, expID)
+			plt.ylabel('Estimated Power Output [W]')
+			plt.xlabel('Experiment ID')
+			plt.ylim(0, 275)
+
+			if figtitles == 1:
+				plt.title('Combined Power Estimations For Each Experiment', fontsize=20)
+			
+			plt.savefig(figrootname + 'ExpTotalPout_Bar_Combined.png')
+
+			
+
 
 
 ##############################################################################

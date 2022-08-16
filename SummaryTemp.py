@@ -16,7 +16,8 @@ from HeaderExperimentData import *
 #######################################
 TempProfiles = 0 # Plot temp profiles for each experiment in a new window
 AvePHTemp = 1 # Plot histogram of average temps 
-PreheatTime = 1
+PreheatTime = 1 # Plot preheat time in minutes for each experiment
+MaxTemps = 1 # Plot max temperatures for each experiment
 
 #######################################
 # Create index for each file
@@ -33,7 +34,7 @@ enumf = len(elbl) # Number of filtered datasets
 #######################################
 figi = 1 # Figure iterator
 figrootname = './Figures/' # Root file name for saving figures
-figtitles = 0 # Include figure titles
+figtitles = 1 # Include figure titles
 plt.style.use('./FigStyle.mplstyle') # Load figure settings from style file
 
 # Get color options
@@ -123,6 +124,7 @@ for i in range(0, enumf):
 
 	edata.append(dataif)
 
+# Output summary data to dataframe 
 Tsmry = Tsmry.assign(PreheatT1=PHT1) # Prehat temperature 1
 Tsmry = Tsmry.assign(PreheatT2=PHT2) # Prehat temperature 2
 Tsmry = Tsmry.assign(PreheatT3=PHT3) # Prehat temperature 3
@@ -169,9 +171,9 @@ if AvePHTemp == 1:
 	plt.bar(0, 0, color=CUclrs[1])
 	plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'], loc='upper left')
 
-	# create bars
+	# Create bars
 	for i in range(0, enumf):
-		if 'Road Mix' in elbl[i]:
+		if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
 			plt.bar(bar_loc[i], Tsmry['AvePreheatTemp'][i], yerr=Tsmry['AvePreheatTempStd'][i], color=CUclrs[1])
 		else:
 			plt.bar(bar_loc[i], Tsmry['AvePreheatTemp'][i], yerr=Tsmry['AvePreheatTempStd'][i], color=CUclrs[0])
@@ -227,7 +229,7 @@ if PreheatTime == 1:
 	plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'], loc='upper left')
 
 	for i in range(0, enumf):
-		if 'Road Mix' in elbl[i]:
+		if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
 			plt.bar(bar_loc[i], Tsmry['PreheatTime'][i], color=CUclrs[1])
 		else:
 			plt.bar(bar_loc[i], Tsmry['PreheatTime'][i], color=CUclrs[0])
@@ -260,6 +262,60 @@ if PreheatTime == 1:
 		plt.title('Time Heated Before Aeration')
 
 	plt.savefig(figrootname + 'PreheatTimes.png')
+
+#######################################
+# Max Temps Preheat Times
+#######################################
+if MaxTemps == 1:
+	# Create figure
+	plt.figure(figi)
+	figi += 1 
+
+	# Bar locaitons
+	bar_loc = np.arange(0,enumf)
+
+	# Create Legend
+	plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$')
+	plt.scatter(None, None, 150, c='r', linewidths=0.1, marker=u'$\u26A1$')
+	plt.bar(0, 0, color=CUclrs[0])
+	plt.bar(0, 0, color=CUclrs[1])
+	plt.legend( ['No Ignition', 'Ignition', 'GAC', 'Petroleum'], loc='upper left')
+
+	# Create bars
+	for i in range(0, enumf):
+		if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
+			plt.bar(bar_loc[i], Tsmry['T_Max'][i], color=CUclrs[1])
+		else:
+			plt.bar(bar_loc[i], Tsmry['T_Max'][i], color=CUclrs[0])
+
+	plt.xticks(bar_loc, expID)
+	plt.ylabel('Temperature [$^\circ$C]')
+	plt.ylim(0,1500)
+	plt.xlabel('Experiment ID')
+
+	if figtitles == 1:
+		plt.title('Maximum Measured Temperature for Each Experiment')
+	
+	tloc = Tsmry['T_Max'] + 15
+
+	for i in range(0, enumf):
+		plt.text(bar_loc[i], tloc[i], '%0.f' % Tsmry['T_Max'][i], horizontalalignment='center')
+
+	tloc = tloc + 35
+
+	for i in range(0, enumf):
+		if igstr[i] == 'Ignition':
+			plt.text(bar_loc[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
+		elif igstr[i] == 'No':
+			plt.text(bar_loc[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
+		elif igstr[i] == 'Ignition without Propegation':
+			plt.text(bar_loc[i], tloc[i], '\u26A1 ', c='r', horizontalalignment='center', size = 16)
+			plt.text(bar_loc[i], tloc[i], '\u2744', c='c', size = 16)
+		else:
+			plt.text(bar_loc[i], tloc[i], '????', c='r', horizontalalignment='center', size = 16)
+
+	plt.savefig(figrootname + 'MaxTemps.png')
+
 
 #######################################
 # Output temperature data to csv
