@@ -15,9 +15,10 @@ from HeaderExperimentData import *
 # Global Variables
 #######################################
 TempProfiles = 0 # Plot temp profiles for each experiment in a new window
-AvePHTemp = 1 # Plot histogram of average temps 
-PreheatTime = 1 # Plot preheat time in minutes for each experiment
-MaxTemps = 1 # Plot max temperatures for each experiment
+TCprofiles = 1 # Plot temp profiles for all experiments for each TC in a separate window
+AvePHTemp = 0 # Plot histogram of average temps 
+PreheatTime = 0 # Plot preheat time in minutes for each experiment
+MaxTemps = 0 # Plot max temperatures for each experiment
 
 #######################################
 # Create index for each file
@@ -136,6 +137,10 @@ Tsmry = Tsmry.assign(AvePreheatTempStd=AvePHTstd)
 Tsmry = Tsmry.assign(PreheatTime=TimeB4Air) # Prehat temperature 3
 Tsmry = Tsmry.assign(T_Max=Tmax) # Power Estimates based on Flat Efficiency Value
 
+
+#######################################
+# Plot temperature profiles for each experiment in a separte window
+#######################################
 if TempProfiles == 1:
 	# Plot all temperatures for each experiment in a separate window
 	for i in range(0, enumf):
@@ -152,6 +157,60 @@ if TempProfiles == 1:
 		if TimeB4Air[i] > 0:
 			plt.plot([AirTime[i], AirTime[i]], [0, Tmax[i]], 'k:')
 
+#######################################
+# Plot temperature profiles for each thermocouple in a separte window
+#######################################
+if TCprofiles == 1:
+	expleg = []
+	for i in range(0, enumf):
+		sym = []
+		if igstr[i] == 'Ignition':
+			sym = '\u26A1'
+		elif igstr[i] == 'No':
+			sym = '\u2744'
+		elif igstr[i] == 'Ignition without Propegation':
+			sym = '\u26A1 ' + '\u2744'
+		else:
+			sym = '????'
+
+		expleg.append(expID[i] + ' ' + sym) 
+
+	for i in range(0, len(Tagstr[0])):
+		plt.figure()
+		figi += 1
+		
+		plt.subplot(312)
+		for j in range(0, enumf):
+			if igstr[j] == 'Ignition':
+				print(igstr[j])
+				plt.plot(edata[j]['RunTime'], edata[j][Tagstr[0][i]], c=clrs[j])
+			
+		plt.xlabel('Run Time [mins]')
+		plt.ylabel('Temperature $^o$C')
+		plt.title('Comparison of Profiles for ' + Tagstr[0][i] + ' which Achieved Ignition')
+
+		plt.subplot(313)
+		for j in range(0, enumf):
+			if igstr[j] != 'Ignition':
+				
+				plt.plot(edata[j]['RunTime'], edata[j][Tagstr[0][i]], c=clrs[j])
+			
+		plt.xlabel('Run Time [mins]')
+		plt.ylabel('Temperature $^o$C')
+		plt.title('Comparison of Profiles for ' + Tagstr[0][i] + ' which Didn\'t Ignite')
+
+		plt.subplot(311)
+		for j in range(0, enumf):
+			plt.plot(edata[j]['RunTime'], edata[j][Tagstr[0][i]])
+			
+
+		plt.xlabel('Run Time [mins]')
+		plt.ylabel('Temperature $^o$C')
+		plt.title('Comparison of Profiles for ' + Tagstr[0][i])
+		
+		plt.legend(expleg)
+
+		
 
 #######################################
 # Average Preheat Temperature
