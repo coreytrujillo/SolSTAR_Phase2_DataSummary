@@ -22,21 +22,18 @@ enumf = len(elbl)
 # Color and font settings for plots
 mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color = clrs)
 plt.style.use('./FigStyle.mplstyle') # Load figure settings from style file
-# mpl.rcParams["figure.figsize"] = (12, 6.75)
-# mpl.rcParams['font.size'] = 15
-# figrootname = './Figures/' + datetime.now().strftime('%y%m%d') + '_' # Figure Output name root
 figrootname = './Figures/' # Figure Output name root
 figi = 1 # Initiate igure iterator
 figtitles = 0 # Include titles on figures
 
 
-
-# Set up figure
-# plt.figure(figi)
-# figi += 1
+#######################################
+# Plot concentration bar chart
+#######################################
+#  Create figure with two axes
 fig, ax = plt.subplots()
-
 ax2 = ax.twinx() # create seocnd y axis
+figi += 1
 
 # Create Legend
 plt.bar(0, 0, color=CUclrs[0])
@@ -45,57 +42,73 @@ plt.bar(0, 0, color=CUclrs[2])
 plt.bar(0, 0, color='w', edgecolor='k')
 plt.scatter(None, None, 150, c='c', linewidths=0.05, marker=u'$\u2744$') # Snowflake
 plt.scatter(None, None, 150, c='r', linewidths=0.1, marker=u'$\u26A1$') # Thunderbolt
-plt.legend( ['No Ignition', 'Ignition', 'Concentration GAC', 'Concentration Petroleum', 'GAC Bed Depth'])
+plt.legend( ['No Ignition', 'Ignition', 'Concentration GAC', 'Concentration Petroleum', 'GAC Bed Depth', 'Clean Cap Depth'])
 
 # x-axis values for histogram plot
 bar_loc = np.arange(0, enumf) 
+b_width = 0.25
 
+# Plot contaminant concentration with crude oil in separate color than GAC
 for i in range(0, enumf):
     if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
-        ax.bar(bar_loc[i], conc[i], color=CUclrs[1], width=0.25,)
+        ax.bar(bar_loc[i], conc[i], color=CUclrs[1], width=b_width,)
     else:
-        ax.bar(bar_loc[i], conc[i], color=CUclrs[0], width=0.25,)
-    
+        ax.bar(bar_loc[i], conc[i], color=CUclrs[0], width=b_width,)
+
+# Plot parameters  
 ax.set_xticks(bar_loc, expID)
 ax.set_xlabel('Experiment ID')
 ax.set_ylabel('Concentration [g/kg]')
-ax.set_ylim(0, max(conc)+ 25)
+ConcMax = max(conc)+ 25 # Concentration max y value
+ax.set_ylim(0, ConcMax)
 ax.spines['left'].set_color(CUclrs[0])
 ax.yaxis.label.set_color(CUclrs[0])
 ax.tick_params(axis='y', colors=CUclrs[0])
 
-GACdepth = np.array(GACbed)/329
-CapDepth = np.array(CleanCap)/329
-ax2.bar(bar_loc - 0.25, GACdepth, color=CUclrs[2], width=0.25)
-ax2.bar(bar_loc + 0.25, CapDepth, color='w', edgecolor = 'k', width=0.25)
+# Plot GAC depth and Clean Cap Depth
+Achannel = 329 # Cross sectional area of a single channnel (cm2)
+GACdepth = np.array(GACbed)/Achannel
+CapDepth = np.array(CleanCap)/Achannel
+DepthMax = 3 # Max value for y axis for depths
+ax2.bar(bar_loc - b_width, GACdepth, color=CUclrs[2], width=b_width)
+ax2.bar(bar_loc + b_width, CapDepth, color='w', edgecolor = 'k', width=b_width)
+
+# Right vertical axis parameters
 ax2.set_ylabel('GAC Bed depth [cm]')
-ax2.set_ylim(0, 3)
+ax2.set_ylim(0, DepthMax)
 ax2.spines['right'].set_color(CUclrs[2])
 ax2.yaxis.label.set_color(CUclrs[2])
 ax2.tick_params(axis='y', colors=CUclrs[2])
 
-tloc_conc = np.array(conc) + 2
-tloc_bed = GACdepth* 1.01
-tloc_cap = CapDepth*1.01
+# Plot text
+tloc_conc = np.array(conc) + 2 # Top of concentration bar
+tloc_bed = GACdepth* 1.01 # Top of GAC depth bar
+tloc_cap = CapDepth*1.01 # Top of Cap depth bar
+
+# Plot labels on top of each bar
 for i in range(0, enumf):
+    # Concentration Bar
     ax.text(bar_loc[i], tloc_conc[i], conc[i], horizontalalignment='center')
+    
+    # GAC depth bar
     if GACdepth[i] == 0:
-        GACstr = str(0)
+        GACstr = ''
     else:
         GACstr = ' %0.1f' % GACdepth[i]
-    
+    ax2.text(bar_loc[i] - b_width, tloc_bed[i], GACstr, horizontalalignment='center')
+
+    # Clean Cap bar label
     if CapDepth[i] == 0:
-        Capstr = str(0)
+        Capstr = ''
     else:
         Capstr = ' %0.1f' % CapDepth[i]
-    ax2.text(bar_loc[i] - 0.25, tloc_bed[i], GACstr, horizontalalignment='center')
-    ax2.text(bar_loc[i] + 0.25, tloc_cap[i], Capstr, horizontalalignment='center')
+    ax2.text(bar_loc[i] + b_width, tloc_cap[i], Capstr, horizontalalignment='center')
 
     # Determine vertical location for snowflakes
-    if tloc_cap[i]*225/3 >  tloc_conc[i]:
-        tloc = tloc_cap[i]*225/3 + 8
-    elif tloc_bed[i]*225/3 > tloc_conc[i]:
-        tloc = tloc_bed[i]*225/3 + 8
+    if tloc_cap[i]*ConcMax/DepthMax >  tloc_conc[i]:
+        tloc = tloc_cap[i]*ConcMax/DepthMax + 8
+    elif tloc_bed[i]*ConcMax/DepthMax > tloc_conc[i]:
+        tloc = tloc_bed[i]*ConcMax/DepthMax + 8
     else:
         tloc = tloc_conc[i] + 8
     
