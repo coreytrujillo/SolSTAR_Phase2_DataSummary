@@ -3,15 +3,24 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import pysine
+import time
 
 def defcolors(numf):
 	# Setup plot colors
 	CUGold = '#CFB87C'
 	CUdarkgrey = '#565A5C'
 	CUlightgrey= '#A2A4A3'
+	UNRBlue = '#003366'
+	UNRsilver = '#D4D3D6'
+	UPPurple = '#1E1656'
+	UPGrey = '#5E6A71'
+
 	clrs = ['red', 'darkorange', 'gold', 'green','blue', 'purple', 'magenta', 'gray', 'darkred', 'coral', 'yellow',  'lime', 'cornflowerblue', 'peru', 'brown', 'firebrick', 'chocolate', 'yellowgreen', 'cyan', 'slateblue', 'deeppink', 'darksalmon' , 'darkseagreen', 'darkturquoise', 'darkorchid', 'fuchsia', 'orange', 'goldenrod',  'forestgreen', 'dodgerblue', 'mediumblue', 'mediumorchid', 'indigo', 'maroon', 'salmon','chartreuse', 'deepskyblue', 'darkviolet', 'crimson', 'darkgoldenrod', 'greenyellow', 'limegreen', 'navy', 'rebeccapurple', 'grey' ]
 
 	CUclrs = [CUGold, CUdarkgrey, CUlightgrey, 'black']
+	UNRclrs = [UNRBlue, UNRsilver]
+	UPclrs = [UPPurple, 'white', UPGrey]
 
 	# If there aren't enough color options for the dataset, show remaining options
 	if numf > len(clrs):
@@ -58,7 +67,7 @@ def defcolors(numf):
 		exit()
 		
 	else:
-		return clrs, CUclrs
+		return clrs, CUclrs#, UNRclrs, UPclrs
 
 def makemarker(lbl, Cstr, Fstr, clrs):
 	# This function creates a unique marker for each collector defined in Cstr and a unique color for each fiber defined in Fstr
@@ -128,6 +137,8 @@ def data_filter(data, datestr, tistr, tfstr):
 	dRT = (dataf['Time'] - dataf['Time'][dataf.index.min()]).dt.total_seconds()/60
 	dataf = dataf.assign(RunTime = dRT)
 	# dataf['RunTime'] = (dataf['Time'] - dataf['Time'][dataf.index.min()]).dt.total_seconds()/60
+
+	dataf = dataf.reset_index()
 		
 	return dataf
 
@@ -264,6 +275,27 @@ def subcount(WinCount):
 	elif WinCount < 21:
 		spx = 5
 		spy = 4
+	elif WinCount < 26:
+		spx = 5
+		spy = 5
+	elif WinCount < 31:
+		spx = 6
+		spy = 5
+	elif WinCount < 37:
+		spx = 6
+		spy = 6
+	elif WinCount < 43:
+		spx = 7
+		spy = 6
+	elif WinCount < 50:
+		spx = 7
+		spy = 7
+	elif WinCount < 57:
+		spx = 8
+		spy = 7
+	elif WinCount < 100:
+		spx = 10
+		spy = 10
 	else:
 		print('We need ', WinCount, 'windows')
 		print('This is more windows than the subcount function is built for')
@@ -271,4 +303,14 @@ def subcount(WinCount):
 		exit()
 	
 	return spx, spy
-		
+
+def celebrate():
+	#######################################
+	# Play tone to signify end of script
+	#######################################
+	pysine.sine(frequency=440.0, duration=0.25)
+	time.sleep(0.1)
+	pysine.sine(frequency=440.0, duration=0.1)
+	time.sleep(0.1)
+	pysine.sine(frequency=440.0, duration=0.1)
+	pysine.sine(frequency=880.0, duration=1)

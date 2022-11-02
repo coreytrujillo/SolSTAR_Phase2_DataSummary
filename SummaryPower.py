@@ -972,7 +972,7 @@ if ExpData == 1:
 				plt.text( bar_loc[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
 			elif igstr[i] == 'No':
 				plt.text(bar_loc[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
-			elif igstr[i] == 'Ignition without Propegation':
+			elif igstr[i] == 'Ignition without Propagation':
 				plt.text(bar_loc[i], tloc[i], '\u26A1  ', c='r', horizontalalignment='center', size = 16)
 				plt.text(bar_loc[i], tloc[i], '  \u2744', c='c', horizontalalignment='center', size = 16)
 			else:
@@ -1118,6 +1118,7 @@ if ExpData == 1:
 		# Type of power estimation
 		PEstType = 'TL' # Trendline
 		Pout_Total = [] # Total power output
+		Pout_STDV = [] # Total power output Standard deviation 
 		# PEstType = 'FA' # Flat Average Efficiency
 		# PEstType = 'PyHi' # High irradiance efficiency 
 
@@ -1138,6 +1139,7 @@ if ExpData == 1:
 			
 			# Initialize varialbes
 			PTot = 0 # Total power
+			PTot_Std =0 # Total Power Standard Deviatoin
 			tloc = 0 # Find the y-location to put text labels
 
 			for j in range(0, len(SSn)):
@@ -1155,6 +1157,7 @@ if ExpData == 1:
 					CFPoutStdtag = 'PoutEst_' + PEstType + '_' + cfn + '_Std'
 					plt.bar(bar_loc[i], esmry[CFpowtag][i], yerr=esmry[CFPoutStdtag][i], bottom = PTot, capsize=4, color = clrs[j+3], ecolor=ec)
 					PTot += esmry[CFpowtag][i]
+					PTot_Std += esmry[CFPoutStdtag][i]
 					tloc = esmry[CFPoutStdtag][i]
 			
 			# Text location for labels above bars
@@ -1170,7 +1173,7 @@ if ExpData == 1:
 				plt.text( bar_loc[i], tloc, '\u26A1', c='r', horizontalalignment='center', size = 16)
 			elif igstr[i] == 'No':
 				plt.text(bar_loc[i], tloc, '\u2744', c='c', horizontalalignment='center', size = 16)
-			elif igstr[i] == 'Ignition without Propegation':
+			elif igstr[i] == 'Ignition without Propagation':
 				plt.text(bar_loc[i], tloc, '\u26A1  ', c='r', horizontalalignment='center', size = 16)
 				plt.text(bar_loc[i], tloc, '  \u2744', c='c', horizontalalignment='center', size = 16)
 			else:
@@ -1178,8 +1181,10 @@ if ExpData == 1:
 			
 			# Total power 
 			Pout_Total.append(PTot)
+			Pout_STDV.append(PTot_Std)
 
 		esmry = esmry.assign(**{'PoutTotalEst_' + PEstType:  Pout_Total})
+		esmry = esmry.assign(**{'PoutTotalEST_STD_' + PEstType: Pout_STDV})
 
 		# Plot parameters
 		plt.xticks(bar_loc, expID)
@@ -1211,23 +1216,23 @@ if ExpData == 1:
 
 			for i in range(0, enumf):
 				if ('Road Mix'  in elbl[i]) or ('Crude Oil' in elbl[i]):
-					plt.bar(bar_loc[i], esmry['PoutTotalEst_TL'][i], color=CUclrs[1]) # [i], yerr=esmry['PinStd'][i], capsize=4
+					plt.bar(bar_loc[i], esmry['PoutTotalEst_TL'][i], color=CUclrs[1], yerr=esmry['PoutTotalEST_STD_TL'][i], capsize=4)
 				else:
-					plt.bar(bar_loc[i], esmry['PoutTotalEst_TL'][i], color=CUclrs[0]) # , yerr=esmry['PinStd'][i], capsize=4, 
+					plt.bar(bar_loc[i], esmry['PoutTotalEst_TL'][i], color=CUclrs[0], yerr=esmry['PoutTotalEST_STD_TL'][i], capsize=4)
 			
-			tloc = esmry['PoutTotalEst_TL'] + 2
+			tloc = esmry['PoutTotalEst_TL'] + esmry['PoutTotalEST_STD_TL'] + 2
 
 			for i in range(0, enumf):
 				plt.text(bar_loc[i], tloc[i], "%.0f" % esmry['PoutTotalEst_TL'][i], horizontalalignment='center')
 
-			tloc = esmry['PoutTotalEst_TL'] + 9
+			tloc = esmry['PoutTotalEst_TL'] + esmry['PoutTotalEST_STD_TL'] + 11
 
 			for i in range(0, enumf):
 				if igstr[i] == 'Ignition':
 					plt.text( bar_loc[i], tloc[i], '\u26A1', c='r', horizontalalignment='center', size = 16)
 				elif igstr[i] == 'No':
 					plt.text(bar_loc[i], tloc[i], '\u2744', c='c', horizontalalignment='center', size = 16)
-				elif igstr[i] == 'Ignition without Propegation':
+				elif igstr[i] == 'Ignition without Propagation':
 					plt.text(bar_loc[i], tloc[i], '\u26A1  ', c='r', horizontalalignment='center', size = 16)
 					plt.text(bar_loc[i], tloc[i], '  \u2744', c='c', horizontalalignment='center', size = 16)
 				else:
@@ -1236,10 +1241,10 @@ if ExpData == 1:
 			plt.xticks(bar_loc, expID)
 			plt.ylabel('Estimated Power Output [W]')
 			plt.xlabel('Experiment ID')
-			plt.ylim(0, 275)
+			plt.ylim(0, tloc.max() + 20)
 
 			if figtitles == 1:
-				plt.title('Combined Power Estimations For Each Experiment', fontsize=20)
+				plt.title('Average Combined Power Output For Each Experiment')
 			
 			plt.savefig(figrootname + 'ExpTotalPout_Bar_Combined.png')
 
